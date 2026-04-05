@@ -17,9 +17,10 @@ my_timer = None
 
 def reset_timer():
     global my_timer 
-    window.after_cancel(my_timer)
+    if my_timer:
+        window.after_cancel(my_timer)
     canvas.itemconfig(timer_text, text = "00:00")
-    my_lable.config(text = "Timer")
+    my_label.config(text = "Timer")
     check_marks.config(text = "")
     global reps
     reps = 0 
@@ -36,13 +37,13 @@ def start_timer():
 
     if reps % 8 == 0:
         count_down(long_break_sec)
-        my_lable.config(text = "Long Break", fg = RED,bg = YELLOW,  highlightthickness = 0)
+        my_label.config(text = "Long Break", fg = RED,bg = YELLOW,  highlightthickness = 0)
     elif reps % 2 == 0:
         count_down(short_break_sec)
-        my_lable.config(text = "Short Break", fg = PINK,bg = YELLOW,  highlightthickness = 0)
+        my_label.config(text = "Short Break", fg = PINK,bg = YELLOW,  highlightthickness = 0)
     else:
         count_down(work_sec)
-        my_lable.config(text = "Work", fg = GREEN,bg = YELLOW,  highlightthickness = 0)
+        my_label.config(text = "Work", fg = GREEN,bg = YELLOW,  highlightthickness = 0)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
@@ -52,7 +53,7 @@ def count_down(count):
     count_sec = count % 60
     if count_sec < 10:
         count_sec = f"0{count_sec}"
-    canvas.itemconfig(timer_text, text = f"{count_min}:{count_sec}")
+    canvas.itemconfig(timer_text, text = f"{count_min:02}:{count_sec}")
     if count > 0:
         global my_timer
         my_timer = window.after(1000, count_down, count - 1)
@@ -70,9 +71,9 @@ window = Tk()
 window.title("Pomodoro")
 window.config(padx = 100, pady = 50, bg = YELLOW)
 
-my_lable = Label(text = "Timer", font = (FONT_NAME, 24, "bold"))
-my_lable.config(fg = GREEN,bg = YELLOW,  highlightthickness = 0)
-my_lable.grid(column = 1, row = 0)
+my_label = Label(text = "Timer", font = (FONT_NAME, 24, "bold"))
+my_label.config(fg = GREEN,bg = YELLOW,  highlightthickness = 0)
+my_label.grid(column = 1, row = 0)
 
 canvas = Canvas(width = 200, height = 224, bg = YELLOW, highlightthickness = 0)
 tomato_img = PhotoImage(file = "tomato.png")
